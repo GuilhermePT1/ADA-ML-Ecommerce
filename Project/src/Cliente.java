@@ -31,6 +31,6 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente: " + "nome= " + nome + ", documento=" + documento + ", email=" + email;
+        return "Nome= " + nome + ", documento=" + documento + ", email=" + email;
     }
 }
