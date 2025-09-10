@@ -31,6 +31,7 @@ src/
 ▶️ Clonagem desse Repositório:
 
 -- https://github.com/GuilhermePT1/ADA-ML-Ecommerce.git
+
 -- Compile e execute a classe Main
 
 🖥️ Exemplo de saída:
