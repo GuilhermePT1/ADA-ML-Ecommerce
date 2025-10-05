@@ -40,8 +40,8 @@ public class Main {
         Pedido pedido = new Pedido(cliente1);
         System.out.println("Status do pedido: " + pedido.getStatus());
 
-        ItemPedido item1 = new ItemPedido(produto1, 5, produto1.getPreco());
-        ItemPedido item2 = new ItemPedido(produto2, 10, produto2.getPreco());
+        ItemPedido item1 = new ItemPedido(produto1, 5, produto1.preco());
+        ItemPedido item2 = new ItemPedido(produto2, 10, produto2.preco());
 
         pedido.adicionarItem(item1);
         pedido.adicionarItem(item2);

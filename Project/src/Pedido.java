@@ -18,7 +18,7 @@ public class Pedido {
     public void adicionarItem(ItemPedido item) {
         if (this.status == StatusPedido.Aberto) {
             this.itens.add(item);
-            System.out.println("Item adicionado: " + item.getProduto().getNome());
+            System.out.println("Item adicionado: " + item.produto().nome());
     }   else
             System.out.println("Não é possível adicionar itens a um pedido sem estar aberto.");
     }
@@ -26,7 +26,7 @@ public class Pedido {
     public void removerItem(ItemPedido item) {
         if (this.status == StatusPedido.Aberto) {
             if (this.itens.remove(item)) {
-                System.out.println("Item removido: " + item.getProduto().getNome());
+                System.out.println("Item removido: " + item.produto().nome());
             } else {
                 System.out.println("Item não encontrado no pedido.");
             }

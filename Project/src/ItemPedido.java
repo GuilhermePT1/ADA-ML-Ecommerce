@@ -1,36 +1,11 @@
-public class ItemPedido {
-    private Produto produto;
-    private int quantidade;
-    private double precoVenda;
+public record ItemPedido (Produto produto, int quantidade, double precoVenda) {
 
-    public ItemPedido(Produto produto, int quantidade, double precoVenda) {
-        this.produto = produto;
-        this.quantidade = quantidade;
-        this.precoVenda = precoVenda;
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public double getPrecoVenda() {
-        return precoVenda;
-    }
-
-    public double  getTotal() {
-        return quantidade * precoVenda;
+    public double getTotal() {
+        return precoVenda * quantidade;
     }
 
     @Override
     public String toString() {
-        return "Item: " + produto.getNome() + ", Quantidade: " + quantidade + ", Preço R$: " + precoVenda;
+        return "- " + produto().nome() + " (Quantidade: " + quantidade() + ", Preço de Venda: R$ " + precoVenda() + ")";
     }
 }
