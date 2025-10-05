@@ -7,7 +7,13 @@ public class SaveRepositorio<T> implements Repositorio<T> {
     @Override
     public void salvar(T obj) {
         lista.add(obj);
-        System.out.println("Cliente salvo: " + obj.toString());
+        if (obj instanceof Cliente) {
+            System.out.println("Cliente salvo: " + obj);
+        } else if (obj instanceof Produto) {
+            System.out.println("Produto salvo: " + obj);
+        } else {
+            System.out.println("Objeto salvo: " + obj);
+        }
     }
 
     @Override

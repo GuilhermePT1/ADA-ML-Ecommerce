@@ -1,3 +1,8 @@
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -7,72 +12,48 @@ public class Main {
 
         System.out.println("--- Ada Commerce ---");
 
-        System.out.println("--- Cadastro de Clientes ---");
-
+        // Cadastro de clientes
         Cliente cliente1 = new Cliente("Guilherme", "159357468-20", "guiparracho@hotmail.com");
         Cliente cliente2 = new Cliente("Ana", "123456789-00", "anatorres@gmail.com");
 
         repositorioCliente.salvar(cliente1);
         repositorioCliente.salvar(cliente2);
 
-        System.out.println("--- Cadastro de Produtos ---");
-
-        Produto produto1 = new Produto("Teclado", 250.00);
-        Produto produto2 = new Produto("Placa de video", 1500.00);
+        // Cadastro de produtos
+        Produto produto1 = new Produto("P001", "Teclado", "Teclado Mecânico RGB", 250.00, 100, Departamento.ELETRONICO);
+        Produto produto2 = new Produto("P002", "Placa de vídeo", "RTX 4070 Super", 3500.00, 20, Departamento.ELETRONICO);
+        Produto produto3 = new Produto("P003", "Livro Java Efetivo", "Guia prático de Java", 120.00, 50, Departamento.LIVROS);
 
         repositorioProduto.salvar(produto1);
         repositorioProduto.salvar(produto2);
+        repositorioProduto.salvar(produto3);
 
-        System.out.println("--- Listagem de Clientes ---");
+        // Criando o pedido
+        Pedido pedido = new Pedido("PED001", cliente1, new ArrayList<>());
 
-        for (Cliente c : repositorioCliente.listar()) {
-            System.out.println(c);
+        pedido.adicionarItem(produto1, 2);
+        pedido.adicionarItem(produto2, 1);
+        pedido.adicionarItem(produto3, 3);
+
+        // Aplicar cupom
+        CupomDeDesconto cupom = new CupomDeDesconto("Gui10", 10.0, LocalDateTime.now().plusDays(5));
+        pedido.aplicarCupomDesconto(cupom);
+
+        // Exibir por departamento
+        Map<Departamento, List<ItemPedido>> itensPorDepartamento = pedido.listarItensPorDepartamento();
+        itensPorDepartamento.forEach((departamento, itens) -> {
+            System.out.println("\nDepartamento: " + departamento);
+            itens.forEach(item -> System.out.println(item));
+            System.out.println("Total do departamento: R$ " + pedido.calcularValorTotalPorDepartamento(departamento));
+        });
+
+        System.out.println("\nValor total do pedido (com desconto): R$ " + pedido.calcularValorTotal());
+
+        // Cupom
+        if (pedido.getCupomDeDesconto().isPresent()) {
+            CupomDeDesconto c = pedido.getCupomDeDesconto().get();
+            System.out.println("Cupom aplicado: " + c.getCodigo() +
+                    " | Válido? " + (c.isValido() ? "Sim" : "Não"));
         }
-
-        System.out.println("--- Listagem de Produtos ---");
-
-        for (Produto p : repositorioProduto.listar()) {
-            System.out.println(p);
-        }
-
-        System.out.println("--- Criação de Pedido ---");
-
-        Pedido pedido = new Pedido(cliente1);
-        System.out.println("Status do pedido: " + pedido.getStatus());
-
-        ItemPedido item1 = new ItemPedido(produto1, 5, produto1.preco());
-        ItemPedido item2 = new ItemPedido(produto2, 10, produto2.preco());
-
-        pedido.adicionarItem(item1);
-        pedido.adicionarItem(item2);
-
-        System.out.println("Total do pedido: R$ " + pedido.calcularTotal());
-
-        System.out.println("* Processo do pedido");
-        if (!pedido.getItens().isEmpty()) {
-            pedido.setStatus(StatusPedido.Aguardando_Pagamento);
-            System.out.println("Status do pedido: " + pedido.getStatus());
-        } else {
-            System.out.println("Não autorizado um pedido sem itens.");
-        }
-
-        System.out.println("* Processando pagamento...");
-        if (pedido.getStatus() == StatusPedido.Aguardando_Pagamento) {
-            pedido.setStatus(StatusPedido.Pago);
-            System.out.println("Status do pedido: " + pedido.getStatus());
-        } else {
-            System.out.println("* Pagamento não autorizado.");
-        }
-
-        System.out.println("* Enviando pedido...");
-        if (pedido.getStatus() == StatusPedido.Pago) {
-            pedido.setStatus(StatusPedido.Enviado);
-            System.out.println("Status do pedido: " + pedido.getStatus());
-        } else {
-            System.out.println("* Envio não autorizado.");
-        }
-
-        System.out.println("--- Fim do Programa ---");
-        System.out.println("Obrigado por comprar na Ada Commerce!");
     }
 }
