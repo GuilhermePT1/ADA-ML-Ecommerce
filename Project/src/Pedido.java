@@ -36,11 +36,9 @@ public class Pedido {
     }
 
     public double calcularTotal() {
-        double total = 0.0;
-        for (ItemPedido item : this.itens) {
-            total += item.getTotal();
-        }
-        return total;
+        return itens.stream()
+                .mapToDouble(ItemPedido::getTotal)
+                .sum();
     }
 
     public Cliente getCliente() {
