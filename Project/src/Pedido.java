@@ -1,59 +1,54 @@
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Pedido {
+
+    private String numero;
     private Cliente cliente;
     private List<ItemPedido> itens;
-    private LocalDate dataPedido;
-    private StatusPedido status;
+    private CupomDeDesconto cupomDeDesconto;
 
-    public Pedido(Cliente cliente) {
+    public Pedido(String numero, Cliente cliente, List<ItemPedido> itens) {
+        this.numero = numero;
         this.cliente = cliente;
-        this.itens = new ArrayList<>();
-        this.dataPedido = LocalDate.now();
-        this.status = StatusPedido.Aberto;
+        this.itens = itens;
     }
 
-    public void adicionarItem(ItemPedido item) {
-        if (this.status == StatusPedido.Aberto) {
-            this.itens.add(item);
-            System.out.println("Item adicionado: " + item.produto().nome());
-    }   else
-            System.out.println("Não é possível adicionar itens a um pedido sem estar aberto.");
+    public void adicionarItem(Produto produto, int quantidade) {
+        itens.add(new ItemPedido(produto, quantidade));
     }
 
-    public void removerItem(ItemPedido item) {
-        if (this.status == StatusPedido.Aberto) {
-            if (this.itens.remove(item)) {
-                System.out.println("Item removido: " + item.produto().nome());
-            } else {
-                System.out.println("Item não encontrado no pedido.");
-            }
-        } else {
-            System.out.println("Não é possível remover itens de um pedido sem estar aberto.");
-        }
+    public void removerItem(Produto produto) {
+        itens.removeIf(item -> item.produto().equals(produto));
     }
 
-    public double calcularTotal() {
+    public Map<Departamento, List<ItemPedido>> listarItensPorDepartamento() {
         return itens.stream()
+                .collect(Collectors.groupingBy(item -> item.produto().getDepartamento()));
+    }
+
+    public double calcularValorTotalPorDepartamento(Departamento departamento) {
+        return itens.stream()
+                .filter(item -> item.produto().getDepartamento() == departamento)
                 .mapToDouble(ItemPedido::getTotal)
                 .sum();
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public double calcularValorTotal() {
+        double total = itens.stream().mapToDouble(ItemPedido::getTotal).sum();
+
+        if (cupomDeDesconto != null && cupomDeDesconto.isValido()) {
+            total -= total * (cupomDeDesconto.getPercentual() / 100);
+        }
+
+        return total;
     }
 
-    public StatusPedido getStatus() {
-        return status;
+    public void aplicarCupomDesconto(CupomDeDesconto cupom) {
+        this.cupomDeDesconto = cupom;
     }
 
-    public void setStatus(StatusPedido status) {
-        this.status = status;
-    }
-
-    public List<ItemPedido> getItens() {
-        return itens;
+    public Optional<CupomDeDesconto> getCupomDeDesconto() {
+        return Optional.ofNullable(cupomDeDesconto);
     }
 }

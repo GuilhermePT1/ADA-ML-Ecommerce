@@ -1,11 +1,10 @@
-public record ItemPedido (Produto produto, int quantidade, double precoVenda) {
-
+public record ItemPedido(Produto produto, int quantidade) {
     public double getTotal() {
-        return precoVenda * quantidade;
+        return produto.getPreco() * quantidade;
     }
 
     @Override
     public String toString() {
-        return "- " + produto().nome() + " (Quantidade: " + quantidade() + ", Preço de Venda: R$ " + precoVenda() + ")";
+        return "- " + produto.getNome() + " (Qtd: " + quantidade + ", Total: R$ " + getTotal() + ")";
     }
 }
