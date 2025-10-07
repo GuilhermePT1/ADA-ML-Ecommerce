@@ -6,22 +6,27 @@ O projeto simula um pequeno e-commerce, permitindo as seguintes funções:
 
 - 👤 Cadastro de clientes
 - 📦 Cadastro de produtos
+- 📦 Departamentos
 - 🧾 Criação de pedidos com vários itens
 - 💰 Cálculo automático do valor total do pedido
-- 🔄 CONtrole do status do pedido: (Aberto -> Aguardadndo_Pagamento -> Pago -> Enviado)
+- 🔄 Controle do status do pedido: (Aberto -> Aguardando_Pagamento -> Pago -> Enviado)
+- 💰 Cupom de Descontos para os pedidos
 
 🛠️ Tecnologia Utilizadas:
 - ☕︎ JAVA
 - Enum para controle de status
 - Interface + implementação de memória (repositório)
-- Princípios básico de SOLID (SRP, OCP, LSP e DIP)
+- Princípios básicos de SOLID (SRP, OCP, LSP e DIP)
+- Stream
 
 📂 Estrutura do projeto:
 
 src/
 -- Cliente
--- Produto
+-- CupomDeDesconto
+-- Departamento
 -- ItemPedido
+-- Produto
 -- Pedido
 -- StatusPedido
 -- Repositorio
@@ -40,15 +45,17 @@ src/
 
 --- Cadastro de Clientes ---
 
-Cliente salvo: Nome= Guilherme, documento=159357468-20, email=guiparracho@hotmail.com
+Cliente salvo: Guilherme, Documento: 159357468-20, Email: guiparracho@hotmail.com
 
-Cliente salvo: Nome= Ana, documento=123456789-00, email=anatorres@gmail.com
+Cliente salvo: Ana, Documento: 123456789-00, Email: anatorres@gmail.com
 
 --- Cadastro de Produtos ---
 
-Cliente salvo: Produto: nome= Teclado, preco R$: 250.0
+Produto salvo: Teclado (R$ 250.0)
 
-Cliente salvo: Produto: nome= Placa de video, preco R$: 1500.0
+Produto salvo: Placa de vídeo (R$ 3500.0)
+
+Produto salvo: Livro Java Efetivo (R$ 120.0)
 
 --- Listagem de Clientes ---
 
@@ -62,27 +69,18 @@ Produto: nome= Teclado, preco R$: 250.0
 
 Produto: nome= Placa de video, preco R$: 1500.0
 
---- Criação de Pedido ---
+--- Criação de Pedido por Departamento ---
 
-Status do pedido: Aberto
+Departamento: ELETRONICO
+- Teclado (Qtd: 2, Total: R$ 500.0)
+- Placa de vídeo (Qtd: 1, Total: R$ 3500.0)
+Total do departamento: R$ 4000.0
 
-Item adicionado: Teclado
+Departamento: LIVROS
+- Livro Java Efetivo (Qtd: 3, Total: R$ 360.0)
+Total do departamento: R$ 360.0
 
-Item adicionado: Placa de video
-
-Total do pedido: R$ 16250.0
-
-* Processo do pedido
-
-Status do pedido: Aguardando_Pagamento
-
-* Processando pagamento...
-
-Status do pedido: Pago
-
-* Enviando pedido...
-Status do pedido: Enviado
+Valor total do pedido (com desconto): R$ 3924.0
+Cupom aplicado: Gui10 | Válido? Sim
 
 --- Fim do Programa ---
-
-Obrigado por comprar na Ada Commerce!
